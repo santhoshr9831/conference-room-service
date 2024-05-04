@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
-public class ConferenceRoomDTO{
-    private Integer id;
-    private String roomName;
-    private Integer roomCapacity;
-    private Integer locationId;
+public class ConferenceRoomDTO {
+  private Integer id;
+  private String roomName;
+  private Integer roomCapacity;
+  private Integer locationId;
 }

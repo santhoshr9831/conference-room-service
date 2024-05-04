@@ -11,16 +11,16 @@ import lombok.Data;
 @Entity
 public class ConferenceRoom {
 
-    @Column(name = "cnf_room_id")
-    @Id
-    private Integer id;
+  @Column(name = "cnf_room_id")
+  @Id
+  private Integer id;
 
-    @Column(name = "room_name")
-    private String roomName;
+  @Column(name = "room_name")
+  private String roomName;
 
-    @Column(name = "room_capacity")
-    private Integer roomCapacity;
+  @Column(name = "room_capacity")
+  private Integer roomCapacity;
 
-    @Column(name = "location_id")
-    private Integer locationId;
+  @Column(name = "location_id")
+  private Integer locationId;
 }

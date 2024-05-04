@@ -1,7 +1,7 @@
 package com.conference.exception;
 
-public class InputValidationException extends Exception{
-    public InputValidationException(String message){
-        super(message);
-    }
+public class InputValidationException extends Exception {
+  public InputValidationException(String message) {
+    super(message);
+  }
 }

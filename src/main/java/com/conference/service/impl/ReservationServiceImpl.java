@@ -50,7 +50,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     if (reservation.contains(MAINTENANCE)) {
       throw new ConferenceRoomNotAvailableException(
-          "Conference room is under maintenance for given time period");
+          "Reservation overlaps maintenance window");
     }
 
     ConferenceRoom availableRoom =
@@ -60,7 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
             .orElseThrow(
                 () ->
                     new ConferenceRoomNotAvailableException(
-                        "Conference room not available for given time period"));
+                        "Conference room not available for given time period. Check availability before reservation"));
 
     Reservation newReservation = modelMapper.map(reservationDTO,Reservation.class);
     newReservation.setRoomId(availableRoom.getId());

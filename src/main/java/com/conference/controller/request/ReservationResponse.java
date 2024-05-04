@@ -10,12 +10,12 @@ import java.time.LocalTime;
 @Builder
 public class ReservationResponse {
 
-    private int reservationId;
-    private int roomId;
-    private String roomName;
-    private int roomCapacity;
-    private int locationId;
-    private LocalDate meetingDate;
-    private LocalTime startTime;
-    private LocalTime endTime;
+  private int reservationId;
+  private int roomId;
+  private String roomName;
+  private int roomCapacity;
+  private int locationId;
+  private LocalDate meetingDate;
+  private LocalTime startTime;
+  private LocalTime endTime;
 }

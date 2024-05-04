@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ConferenceRoomServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConferenceRoomServiceApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(ConferenceRoomServiceApplication.class, args);
+  }
 
-	@Bean
-	public ModelMapper getModelMapper() {
-		return new ModelMapper();
-	}
+  @Bean
+  public ModelMapper getModelMapper() {
+    return new ModelMapper();
+  }
 }
