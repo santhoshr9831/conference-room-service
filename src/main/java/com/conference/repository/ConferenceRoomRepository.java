@@ -9,7 +9,10 @@ import java.util.List;
 
 @Repository
 public interface ConferenceRoomRepository extends JpaRepository<ConferenceRoom, Integer> {
+
   @Query(
-      "SELECT r from ConferenceRoom r WHERE r.roomCapacity >=:roomCapacity and r.locationId=:locationId order by r.roomCapacity")
+      "SELECT r from ConferenceRoom r WHERE r.roomCapacity >=:roomCapacity and r.locationId=:locationId and isActive=true order by r.roomCapacity")
   List<ConferenceRoom> findRoomsByCapacity(Integer roomCapacity, int locationId);
+
+  List<ConferenceRoom> findAllByLocationIdAndIsActive(Integer locationId, boolean isActive);
 }

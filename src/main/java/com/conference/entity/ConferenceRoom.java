@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import lombok.Data;
 
 @Data
@@ -23,4 +24,7 @@ public class ConferenceRoom {
 
   @Column(name = "location_id")
   private Integer locationId;
+
+  @Column(name = "is_active")
+  private Boolean isActive;
 }

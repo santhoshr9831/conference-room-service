@@ -15,5 +15,5 @@ public class ReservationDTO {
   private LocalDate meetingDate;
   private LocalTime startTime;
   private LocalTime endTime;
-  private int locationId;
+  private Integer locationId;
 }

@@ -23,4 +23,7 @@ public class Reservation {
   private LocalTime startTime;
 
   private LocalTime endTime;
+
+  @Column(name = "is_active")
+  private Boolean isActive = true;
 }
