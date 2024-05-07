@@ -59,7 +59,7 @@ public class AvailabilityServiceTest {
 
     assertEquals(1, result.size());
     assertEquals("Room 1", result.get(0).getRoomName());
-    assertEquals(10, result.get(0).getCapacity());
+    assertEquals(10, result.get(0).getRoomCapacity());
     assertTrue(result.get(0).getAvailable());
   }
 
@@ -87,7 +87,7 @@ public class AvailabilityServiceTest {
 
     assertEquals(1, result.size());
     assertEquals("Room 1", result.get(0).getRoomName());
-    assertEquals(10, result.get(0).getCapacity());
+    assertEquals(10, result.get(0).getRoomCapacity());
     assertFalse(result.get(0).getAvailable());
   }
 

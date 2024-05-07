@@ -1,4 +1,4 @@
-package com.conference.controller.request;
+package com.conference.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

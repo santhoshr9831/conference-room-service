@@ -1,6 +1,6 @@
 package com.conference.service.impl;
 
-import com.conference.controller.request.ReservationResponse;
+import com.conference.dto.request.ReservationResponse;
 import com.conference.dto.ConferenceRoomDTO;
 import com.conference.dto.ReservationDTO;
 import com.conference.entity.Reservation;
@@ -16,7 +16,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-import static com.conference.utils.Constants.MAINTENANCE;
+import static com.conference.constant.Constants.*;
+import static com.conference.constant.ErrorCodes.*;
 
 @Slf4j
 @Service
@@ -40,11 +41,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     if (CollectionUtils.isEmpty(roomList)) {
       log.info(
-          "Conference room not available for capacity {}, location {}",
+          ROOM_NOT_AVAILABLE_OR_CAPACITY_NOT_MET.getErrorMessage(),
           reservationDTO.getRoomCapacity(),
           reservationDTO.getLocationId());
       throw new ConferenceRoomNotAvailableException(
-          "Conference room not available with expected capacity");
+          ROOM_NOT_AVAILABLE_OR_CAPACITY_NOT_MET.getErrorCode(),
+          ROOM_NOT_AVAILABLE_OR_CAPACITY_NOT_MET.getErrorMessage());
     }
     log.info(
         "Total {} no of conference room matching for location {}, noOfparticipants {}",
@@ -63,8 +65,9 @@ public class ReservationServiceImpl implements ReservationService {
         reservationDTO.getLocationId());
 
     if (reservationList.contains(MAINTENANCE)) {
-      log.info("Reservation overlaps maintenance window");
-      throw new ConferenceRoomNotAvailableException("Reservation overlaps maintenance window");
+      log.info(OVERLAPS_MAINTENANCE.getErrorMessage());
+      throw new ConferenceRoomNotAvailableException(
+          OVERLAPS_MAINTENANCE.getErrorCode(), OVERLAPS_MAINTENANCE.getErrorMessage());
     }
 
     ConferenceRoomDTO availableRoom =
@@ -73,17 +76,16 @@ public class ReservationServiceImpl implements ReservationService {
             .findFirst()
             .orElseThrow(
                 () -> {
-                  log.info(
-                      "Conference room not available for given time period. Check availability before reservation");
+                  log.info(ALL_ROOMS_RESERVED.getErrorMessage());
                   return new ConferenceRoomNotAvailableException(
-                      "Conference room not available for given time period. Check availability before reservation");
+                      ALL_ROOMS_RESERVED.getErrorCode(), ALL_ROOMS_RESERVED.getErrorMessage());
                 });
 
     Reservation newReservation = modelMapper.map(reservationDTO, Reservation.class);
     newReservation.setRoomId(availableRoom.getId());
     reservationRepository.save(newReservation);
 
-    log.info("Meeting room : {} is reserved !!", availableRoom.getRoomName());
+    log.info("Meeting room : {} is reserved !!!", availableRoom.getRoomName());
 
     return ReservationResponse.builder()
         .reservationId(newReservation.getReservationId())
@@ -91,9 +93,9 @@ public class ReservationServiceImpl implements ReservationService {
         .roomId(newReservation.getRoomId())
         .roomCapacity(availableRoom.getRoomCapacity())
         .locationId(availableRoom.getLocationId())
-        .meetingDate(newReservation.getMeetingDate())
-        .startTime(newReservation.getStartTime())
-        .endTime(newReservation.getEndTime())
+        .meetingDate(newReservation.getMeetingDate().toString())
+        .startTime(newReservation.getStartTime().toString())
+        .endTime(newReservation.getEndTime().toString())
         .build();
   }
 

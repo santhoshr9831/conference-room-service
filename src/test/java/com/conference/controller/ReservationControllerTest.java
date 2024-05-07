@@ -1,8 +1,7 @@
 package com.conference.controller;
 
-import com.conference.controller.api.ReservationController;
-import com.conference.controller.request.ReservationRequest;
-import com.conference.controller.request.ReservationResponse;
+import com.conference.dto.request.ReservationRequest;
+import com.conference.dto.request.ReservationResponse;
 import com.conference.exception.ConferenceRoomNotAvailableException;
 import com.conference.exception.InputValidationException;
 import com.conference.service.ReservationService;
@@ -34,9 +33,9 @@ public class ReservationControllerTest {
         .roomName("Room1")
         .roomCapacity(4)
         .locationId(1)
-        .meetingDate(LocalDate.now())
-        .startTime(LocalTime.now())
-        .endTime(LocalTime.now().plusHours(1))
+        .meetingDate(LocalDate.now().toString())
+        .startTime(LocalTime.now().toString())
+        .endTime(LocalTime.now().plusHours(1).toString())
         .build();
   }
 
@@ -142,7 +141,7 @@ public class ReservationControllerTest {
     request.setStartTime(startTime);
     request.setEndTime(endTime);
     request.setLocationId(1);
-    when(reservationService.reserveConferenceRoom(any())).thenThrow(new ConferenceRoomNotAvailableException("Conference room not available with expected capacity"));
+    when(reservationService.reserveConferenceRoom(any())).thenThrow(new ConferenceRoomNotAvailableException("Error1","Conference room not available with expected capacity"));
 
 
     // When

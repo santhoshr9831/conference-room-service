@@ -1,6 +1,5 @@
 package com.conference.controller;
 
-import com.conference.controller.api.AvailabilityController;
 import com.conference.dto.ConferenceRoomAvailabilityDTO;
 import com.conference.exception.InputValidationException;
 import com.conference.service.AvailabilityService;
@@ -28,12 +27,12 @@ public class AvailabilityControllerTest {
 
 
     public List<ConferenceRoomAvailabilityDTO> getMeetingRoom(){
-        return List.of(ConferenceRoomAvailabilityDTO.builder().roomName("room1").capacity(2).available(true).build(),
-                ConferenceRoomAvailabilityDTO.builder().roomName("room2").capacity(5).available(false).build());
+        return List.of(ConferenceRoomAvailabilityDTO.builder().roomName("room1").roomCapacity(2).available(true).build(),
+                ConferenceRoomAvailabilityDTO.builder().roomName("room2").roomCapacity(5).available(false).build());
     }
     public List<ConferenceRoomAvailabilityDTO> getMeetingRoomWithNoAvailability(){
-        return List.of(ConferenceRoomAvailabilityDTO.builder().roomName("room1").capacity(2).available(false).build(),
-                ConferenceRoomAvailabilityDTO.builder().roomName("room2").capacity(5).available(false).build());
+        return List.of(ConferenceRoomAvailabilityDTO.builder().roomName("room1").roomCapacity(2).available(false).build(),
+                ConferenceRoomAvailabilityDTO.builder().roomName("room2").roomCapacity(5).available(false).build());
     }
 
     @Test

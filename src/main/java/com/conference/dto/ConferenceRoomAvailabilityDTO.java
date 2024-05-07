@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class ConferenceRoomAvailabilityDTO {
   private String roomName;
-  private Integer capacity;
+  private Integer roomCapacity;
   private Boolean available;
 }

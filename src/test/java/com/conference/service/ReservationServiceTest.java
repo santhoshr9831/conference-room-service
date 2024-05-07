@@ -1,6 +1,6 @@
 package com.conference.service;
 
-import com.conference.controller.request.ReservationResponse;
+import com.conference.dto.request.ReservationResponse;
 import com.conference.dto.ConferenceRoomDTO;
 import com.conference.dto.ReservationDTO;
 import com.conference.entity.Reservation;
@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
+import static com.conference.constant.ErrorCodes.ALL_ROOMS_RESERVED;
+import static com.conference.constant.ErrorCodes.ROOM_NOT_AVAILABLE_OR_CAPACITY_NOT_MET;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -67,9 +69,9 @@ public class ReservationServiceTest {
     assertEquals(1, response.getRoomId());
     assertEquals(10, response.getRoomCapacity());
     assertEquals(1, response.getLocationId());
-    assertEquals(LocalDate.now().plusDays(1), response.getMeetingDate());
-    assertEquals(LocalTime.of(9, 0), response.getStartTime());
-    assertEquals(LocalTime.of(10, 0), response.getEndTime());
+    assertEquals(LocalDate.now().plusDays(1).toString(), response.getMeetingDate());
+    assertEquals(LocalTime.of(9, 0).toString(), response.getStartTime());
+    assertEquals(LocalTime.of(10, 0).toString(), response.getEndTime());
   }
 
   @Test
@@ -96,7 +98,7 @@ public class ReservationServiceTest {
             () -> {
               reservationService.reserveConferenceRoom(reservationDTO);
             });
-    assertEquals(e.getMessage(), "Conference room not available with expected capacity");
+    assertEquals(ROOM_NOT_AVAILABLE_OR_CAPACITY_NOT_MET.getErrorMessage(), e.getMessage());
   }
 
   @Test
@@ -160,9 +162,7 @@ public class ReservationServiceTest {
             () -> {
               reservationService.reserveConferenceRoom(reservationDTO);
             });
-    assertEquals(
-        e.getMessage(),
-        "Conference room not available for given time period. Check availability before reservation");
+    assertEquals(ALL_ROOMS_RESERVED.getErrorMessage(), e.getMessage());
   }
 
   private List<ConferenceRoomDTO> getRoomList() {

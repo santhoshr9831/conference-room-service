@@ -1,61 +1,72 @@
 package com.conference.exception;
 
-import com.conference.controller.request.Response;
-import com.conference.utils.ErrorCodes;
+import com.conference.dto.request.ErrorResponse;
+import com.conference.constant.ErrorCodes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import static com.conference.utils.Constants.ARGUMENT_TYPE_MISMATCH;
+import static com.conference.constant.Constants.ARGUMENT_TYPE_MISMATCH;
+import static com.conference.constant.ErrorCodes.GENERIC_EXCEPTION;
+import static com.conference.constant.ErrorCodes.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Response> methodArgumentNotValidException(
+  public ResponseEntity<ErrorResponse> methodArgumentNotValidException(
       MethodArgumentNotValidException exception) {
     return ResponseEntity.badRequest()
         .body(
-            new Response(
+            new ErrorResponse(
                 exception.getBindingResult().getFieldError().getDefaultMessage(),
-                ErrorCodes.INPUT_VALIDATION_FAILURE));
+                ErrorCodes.INPUT_VALIDATION_FAILURE.getErrorCode()));
   }
 
   @ExceptionHandler(InputValidationException.class)
-  public ResponseEntity<Response> inputValidation(Exception e) {
+  public ResponseEntity<ErrorResponse> inputValidation(InputValidationException e) {
     return ResponseEntity.badRequest()
-        .body(new Response(e.getMessage(), ErrorCodes.INPUT_VALIDATION_FAILURE));
+        .body(new ErrorResponse(e.getMessage(), e.getErrorCode()));
   }
 
-  @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-  public ResponseEntity<Response> parameterValidation(MethodArgumentTypeMismatchException e) {
+  @ExceptionHandler({MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
+  public ResponseEntity<ErrorResponse> parameterValidation(RuntimeException e) {
     return ResponseEntity.badRequest()
         .body(
-            new Response(
-                String.format(ARGUMENT_TYPE_MISMATCH, e.getName()),
-                ErrorCodes.INPUT_VALIDATION_FAILURE));
+            new ErrorResponse(ARGUMENT_TYPE_MISMATCH,
+                ErrorCodes.INPUT_VALIDATION_FAILURE.getErrorCode()));
   }
 
   @ExceptionHandler(ConferenceRoomNotAvailableException.class)
-  public ResponseEntity<Response> conferenceRoomNotAvailable(
+  public ResponseEntity<ErrorResponse> conferenceRoomNotAvailable(
       ConferenceRoomNotAvailableException e) {
     return ResponseEntity.badRequest()
-        .body(new Response(e.getMessage(), ErrorCodes.CONFERENCE_ROOM_NOT_AVAILABLE));
+        .body(new ErrorResponse(e.getMessage(), e.getErrorCode()));
   }
 
   @ExceptionHandler(NoResourceFoundException.class)
-  public ResponseEntity<Response> resourceNotFoundException(NoResourceFoundException e) {
+  public ResponseEntity<ErrorResponse> resourceNotFoundException(NoResourceFoundException e) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body(new Response(e.getMessage(), ErrorCodes.RESOURCE_NOT_FOUND_EXCEPTION));
+        .body(new ErrorResponse(e.getMessage(), ErrorCodes.RESOURCE_NOT_FOUND_EXCEPTION.getErrorCode()));
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Response> generalException(Exception e) {
+  public ResponseEntity<ErrorResponse> generalException(Exception e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(new Response(e.getMessage(), ErrorCodes.GENERIC_EXCEPTION));
+        .body(new ErrorResponse(e.getMessage(), GENERIC_EXCEPTION.getErrorCode()));
+  }
+
+  @ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<ErrorResponse> runtimeException(Exception e) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(
+            new ErrorResponse(
+                    INTERNAL_SERVER_ERROR.getErrorMessage(),
+                    INTERNAL_SERVER_ERROR.getErrorCode()));
   }
 }

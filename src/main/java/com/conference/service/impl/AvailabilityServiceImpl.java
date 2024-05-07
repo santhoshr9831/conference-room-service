@@ -17,7 +17,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static com.conference.utils.Constants.*;
+import static com.conference.constant.Constants.*;
+import static com.conference.constant.ErrorCodes.ROOM_NOT_AVAILABLE_FOR_LOCATION;
 
 @AllArgsConstructor
 @Service
@@ -42,7 +43,9 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
     if (roomList.isEmpty()) {
       log.info("Conference room not found for location {}", locationId);
-      throw new ConferenceRoomNotAvailableException("Conference room not found for given location");
+      throw new ConferenceRoomNotAvailableException(
+          ROOM_NOT_AVAILABLE_FOR_LOCATION.getErrorCode(),
+          ROOM_NOT_AVAILABLE_FOR_LOCATION.getErrorMessage());
     }
     List<Integer> reservationsList =
         reservationService.findReservationsAndMaintenance(
@@ -60,7 +63,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
             conferenceRoom ->
                 ConferenceRoomAvailabilityDTO.builder()
                     .roomName(conferenceRoom.getRoomName())
-                    .capacity(conferenceRoom.getRoomCapacity())
+                    .roomCapacity(conferenceRoom.getRoomCapacity())
                     .available(!isMaintenance && !reservationsList.contains(conferenceRoom.getId()))
                     .build())
         .toList();

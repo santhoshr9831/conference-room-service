@@ -1,6 +1,6 @@
 package com.conference.service;
 
-import com.conference.controller.request.ReservationResponse;
+import com.conference.dto.request.ReservationResponse;
 import com.conference.dto.ReservationDTO;
 import com.conference.exception.ConferenceRoomNotAvailableException;
 

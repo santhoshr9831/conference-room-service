@@ -1,4 +1,4 @@
-package com.conference.controller.request;
+package com.conference.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ public class ReservationResponse {
   private String roomName;
   private int roomCapacity;
   private int locationId;
-  private LocalDate meetingDate;
-  private LocalTime startTime;
-  private LocalTime endTime;
+  private String meetingDate;
+  private String startTime;
+  private String endTime;
 }
