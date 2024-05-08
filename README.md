@@ -33,7 +33,8 @@ Tomcat started on port 8080 (http) with context path
 Started ConferenceRoomServiceApplication in 4.067 seconds (process running for 4.606)
 ```
 
-Spring Doc is integrated in application hence you look at API documentation as well as test API directly from Swagger
+Spring Doc is integrated in application hence API documentation are available at swagger.
+Application can be directly tested in swagger.
 
 SwaggerURL: http://localhost:8080/swagger-ui/index.html
 
@@ -49,23 +50,51 @@ JDBC url: jdbc:h2:mem:conferencedb
 Username : sa
 password : password
 ```
+Out of scope
+- API security scoped out for this project. 
+- Auditing fields like createdBy and createdDate are not implemented as we dont have security.
 
 
-Quick details about Data:
+Quick details about API:
+
+- Reservation API: 
+  - Added meeting data so we can extend the API to book meeting rooms for future date with minimul change.
+  - Added locationID and default to 1.  We can create room for multiple location and reserve. 
+  - Location details is storied in separate table
+  - Maintenance is extended at room level as well. We can close a room for maintenance partially or for entire day as well.
+
+
+- Availability API:
+  - Location application for this API as well and its option value default to locationId: 1
+
+
+Information about preloaded data:
+
 - We have two location 1, 2.
 - Few meeting rooms created for each location. You can list available meeting rooms from /availability API.
+```editorconfig
+ROOM_NAME	ROOM_CAPACITY	LOCATION_ID
+Amaze		3		1
+Beauty		7		1
+Inspire		12		1
+Strive		20		1
+Edge		15		2
+Square		20		2
+Circle		20		2
+```
 - Meeting rooms cannot be booked during below maintenance window.
 - Maintenance can be configured at room level or location level
 - Record 1,2,3 are at location level.
 - Record 4,6 are at room level.
 
 ```editorconfig
-( room_id, location_id, mnt_start_time, mnt_end_time) values ( 0, 1, '09:00', '09:15');
-( room_id, location_id, mnt_start_time, mnt_end_time) values ( 0, 1, '13:00', '13:15');
-( room_id, location_id, mnt_start_time, mnt_end_time) values ( 0, 1, '17:00', '17:15');
-( room_id, location_id, mnt_start_time, mnt_end_time) values ( 1, 1, '11:00', '11:15');
-( room_id, location_id, mnt_start_time, mnt_end_time) values ( 0, 2, '08:00', '08:15');
-( room_id, location_id, mnt_start_time, mnt_end_time) values ( 7, 2, '12:00', '15:15');
+ROOM_ID LOCATION_ID MNT_START_TIME  MNT_END_TIME
+0	1	    9:00:00         9:15:00
+0	1	    13:00:00        13:15:00
+0	1	    17:00:00	    17:15:00
+1	1	    11:00:00	    11:15:00
+0	2	    8:00:00         8:15:00
+6	2	    12:00:00        15:15:00
 ```
 
 

@@ -7,10 +7,10 @@ import com.conference.exception.ConferenceRoomNotAvailableException;
 import com.conference.service.AvailabilityService;
 import com.conference.service.ConferenceRoomService;
 import com.conference.service.ReservationService;
+import com.conference.utils.ValidationUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,15 +29,18 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
   final ConferenceRoomService conferenceRoomService;
 
-  final ModelMapper modelMapper;
-
   @SneakyThrows
   @Override
   public List<ConferenceRoomAvailabilityDTO> getConferenceRoomsAvailability(
       LocalTime startTime, LocalTime endTime, Integer locationId) {
 
+    ValidationUtils.startAndEndTimeValidation(startTime, endTime);
+
+    log.info(INPUT_VALIDATION_SUCCESS);
+
+
     List<ConferenceRoomDTO> roomList =
-        conferenceRoomService.findConferenceRoomsByLocation(locationId);
+        conferenceRoomService.getConferenceRoomsByLocation(locationId);
 
     log.info("{} no of conference room in location {}", roomList.size(), locationId);
 
@@ -49,23 +52,17 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     }
     List<Integer> reservationsList =
         reservationService.findReservationsAndMaintenance(
-            ReservationDTO.builder()
-                .meetingDate(LocalDate.now())
-                .startTime(startTime)
-                .endTime(endTime)
-                .locationId(locationId)
-                .build());
+            new ReservationDTO(LocalDate.now(), startTime, endTime, locationId));
 
     boolean isMaintenance = reservationsList.contains(MAINTENANCE);
 
     return roomList.stream()
         .map(
             conferenceRoom ->
-                ConferenceRoomAvailabilityDTO.builder()
-                    .roomName(conferenceRoom.getRoomName())
-                    .roomCapacity(conferenceRoom.getRoomCapacity())
-                    .available(!isMaintenance && !reservationsList.contains(conferenceRoom.getId()))
-                    .build())
+                new ConferenceRoomAvailabilityDTO(
+                    conferenceRoom.roomName(),
+                    conferenceRoom.roomCapacity(),
+                    !isMaintenance && !reservationsList.contains(conferenceRoom.id())))
         .toList();
   }
 }

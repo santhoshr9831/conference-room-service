@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCodes {
-  INPUT_VALIDATION_FAILURE("G_0001", "Input validation failure"),
+  INPUT_VALIDATION_FAILURE("G_0001", "Input data format is invalid"),
   GENERIC_EXCEPTION("G_0002", "Generic exception"),
   RESOURCE_NOT_FOUND_EXCEPTION("G_0003", "Resource not found"),
   INTERNAL_SERVER_ERROR("G_0004", "Internal server error"),

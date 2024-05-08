@@ -27,12 +27,12 @@ public class AvailabilityControllerTest {
 
 
     public List<ConferenceRoomAvailabilityDTO> getMeetingRoom(){
-        return List.of(ConferenceRoomAvailabilityDTO.builder().roomName("room1").roomCapacity(2).available(true).build(),
-                ConferenceRoomAvailabilityDTO.builder().roomName("room2").roomCapacity(5).available(false).build());
+        return List.of(new ConferenceRoomAvailabilityDTO("room1",2,true),
+                new ConferenceRoomAvailabilityDTO("room2",5,false));
     }
     public List<ConferenceRoomAvailabilityDTO> getMeetingRoomWithNoAvailability(){
-        return List.of(ConferenceRoomAvailabilityDTO.builder().roomName("room1").roomCapacity(2).available(false).build(),
-                ConferenceRoomAvailabilityDTO.builder().roomName("room2").roomCapacity(5).available(false).build());
+        return List.of(new ConferenceRoomAvailabilityDTO("room1",2,false),
+                new ConferenceRoomAvailabilityDTO("room2",5,false));
     }
 
     @Test
@@ -66,8 +66,8 @@ public class AvailabilityControllerTest {
 
         // Then
         assertEquals(2, result.getBody().size());
-        assertTrue(result.getBody().get(0).getAvailable());
-        assertFalse(result.getBody().get(1).getAvailable());
+        assertTrue(result.getBody().get(0).available());
+        assertFalse(result.getBody().get(1).available());
 
     }
 
@@ -85,29 +85,8 @@ public class AvailabilityControllerTest {
         // Then
         assertEquals(2, result.getBody().size());
         for (ConferenceRoomAvailabilityDTO dto : result.getBody()) {
-            assertFalse(dto.getAvailable());
+            assertFalse(dto.available());
         }
     }
-
-    @Test
-    public void test_start_time_is_equal_to_end_time() {
-        // Given
-        LocalTime startTime = LocalTime.of(9, 0);
-        LocalTime endTime = LocalTime.of(9, 0);
-
-        // When, Then
-        assertThrows(InputValidationException.class, () -> availabilityController.getRoomsAvailability(startTime, endTime,1));
-    }
-
-    @Test
-    public void test_start_time_is_after_end_time() {
-        // Given
-        LocalTime startTime = LocalTime.of(10, 0);
-        LocalTime endTime = LocalTime.of(9, 0);
-
-        // When, Then
-        assertThrows(InputValidationException.class, () -> availabilityController.getRoomsAvailability(startTime, endTime,1));
-    }
-
 
 }

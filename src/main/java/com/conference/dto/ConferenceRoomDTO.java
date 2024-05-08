@@ -1,13 +1,5 @@
 package com.conference.dto;
 
-import lombok.Builder;
-import lombok.Data;
+public record ConferenceRoomDTO (Integer id, String roomName, Integer roomCapacity, Integer locationId){
 
-@Data
-@Builder
-public class ConferenceRoomDTO {
-  private Integer id;
-  private String roomName;
-  private Integer roomCapacity;
-  private Integer locationId;
 }

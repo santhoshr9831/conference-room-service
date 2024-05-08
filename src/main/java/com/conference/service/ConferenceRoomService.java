@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ConferenceRoomService {
 
-  List<ConferenceRoomDTO> findConferenceRoomsMatchingCapacity(Integer capacity, Integer locationId);
+  List<ConferenceRoomDTO> getConferenceRoomsMatchingCapacity(Integer capacity, Integer locationId);
 
-  List<ConferenceRoomDTO> findConferenceRoomsByLocation(Integer locationId);
+  List<ConferenceRoomDTO> getConferenceRoomsByLocation(Integer locationId);
 }

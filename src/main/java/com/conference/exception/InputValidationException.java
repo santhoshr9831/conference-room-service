@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.StringJoiner;
 
 @Getter
-public class InputValidationException extends Exception {
+public class InputValidationException extends RuntimeException {
   private final String errorCode;
   public InputValidationException(String errorCode,String message) {
     super(message);

@@ -1,7 +1,5 @@
 package com.conference.constant;
 
-import javax.swing.plaf.PanelUI;
-
 public class Constants {
 
   private Constants() {
@@ -10,5 +8,5 @@ public class Constants {
 
   public static final int MAINTENANCE = 0;
   public static final int DEFAULT_LOCATION = 1;
-  public static final String ARGUMENT_TYPE_MISMATCH = "Type mismatch for argument";
+  public static final String INPUT_VALIDATION_SUCCESS = "Input data validation completed";
 }

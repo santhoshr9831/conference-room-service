@@ -1,6 +1,6 @@
 package com.conference.exception;
 
-import com.conference.dto.request.ErrorResponse;
+import com.conference.dto.response.ErrorResponse;
 import com.conference.constant.ErrorCodes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import static com.conference.constant.Constants.ARGUMENT_TYPE_MISMATCH;
-import static com.conference.constant.ErrorCodes.GENERIC_EXCEPTION;
-import static com.conference.constant.ErrorCodes.INTERNAL_SERVER_ERROR;
+import static com.conference.constant.ErrorCodes.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,7 +36,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> parameterValidation(RuntimeException e) {
     return ResponseEntity.badRequest()
         .body(
-            new ErrorResponse(ARGUMENT_TYPE_MISMATCH,
+            new ErrorResponse(INPUT_VALIDATION_FAILURE.getErrorMessage(),
                 ErrorCodes.INPUT_VALIDATION_FAILURE.getErrorCode()));
   }
 

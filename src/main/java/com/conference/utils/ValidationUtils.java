@@ -1,6 +1,5 @@
 package com.conference.utils;
 
-import com.conference.constant.ErrorCodes;
 import com.conference.exception.InputValidationException;
 import lombok.extern.slf4j.Slf4j;
 
