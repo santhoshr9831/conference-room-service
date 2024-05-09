@@ -15,7 +15,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
           """
              select room_id from CNF_ROOM_RESERVATIONS where meeting_date=:meetingDate
              and start_time < :endTime and  end_time > :startTime and is_active=true
-             union
+             union all
              select room_id from CNF_ROOM_MAINTENANCE where mnt_start_time < :endTime and  mnt_end_time > :startTime
              and location_id=:location and is_active=true order by room_id""")
   List<Integer> findReservationsAndMaintenance(

@@ -31,3 +31,4 @@ end_time time not null,
 is_active bit default 1,
 foreign key (room_id) references conference_room(cnf_room_id)
 );
+create index meeting_date_time_index on cnf_room_reservations (meeting_date, start_time, end_time);
